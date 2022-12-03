@@ -1,6 +1,6 @@
 use crate::priority::get_priority;
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub struct Item {
     pub character: char,
     pub priority: i32,
