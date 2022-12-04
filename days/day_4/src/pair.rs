@@ -19,11 +19,21 @@ impl Pair {
         Pair { elves }
     }
 
-    pub fn overlaps(&self) -> bool {
+    pub fn completely_overlaps(&self) -> bool {
         let a: &Elf = &self.elves[0];
         let b: &Elf = &self.elves[1];
 
         (a.section_start >= b.section_start && a.section_end <= b.section_end)
             || (b.section_start >= a.section_start && b.section_end <= a.section_end)
+    }
+
+    pub fn partially_overlaps(&self) -> bool {
+        let a: &Elf = &self.elves[0];
+        let b: &Elf = &self.elves[1];
+
+        (a.section_start >= b.section_start && a.section_start <= b.section_end)
+            || (a.section_end >= b.section_start && a.section_end <= b.section_end)
+            || (b.section_start >= a.section_start && b.section_start <= a.section_end)
+            || (b.section_end >= a.section_start && b.section_end <= a.section_end)
     }
 }
