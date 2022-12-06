@@ -22,7 +22,7 @@ impl Ship {
         }
     }
 
-    pub fn move_crates(&mut self) {
+    pub fn move_crates_9000(&mut self) {
         for instruction in &self.instructions {
             let mut amount = instruction.number;
 
@@ -31,6 +31,24 @@ impl Ship {
                     self.stacks[instruction.to as usize].push(letter);
                 }
                 amount -= 1;
+            }
+        }
+    }
+
+    pub fn move_crates_9001(&mut self) {
+        for instruction in &self.instructions {
+            let mut amount = instruction.number;
+            let mut to_move: Vec<char> = Vec::new();
+
+            while amount > 0 {
+                if let Some(letter) = self.stacks[instruction.from as usize].pop() {
+                    to_move.push(letter);
+                }
+                amount -= 1;
+            }
+
+            for letter in to_move.iter().rev() {
+                self.stacks[instruction.to as usize].push(*letter);
             }
         }
     }
