@@ -29,6 +29,44 @@ impl Filesystem {
 
         total
     }
+
+    pub fn make_free_space(&self, size: i32) -> i32 {
+        let to_free: i32 = self.current_used_space() - (70_000_000 - size);
+        self.smallest_directory_under(to_free)
+    }
+
+    fn smallest_directory_under(&self, size: i32) -> i32 {
+        let mut sizes: Vec<i32> = Vec::new();
+
+        for files in self.directories.values() {
+            let mut sum: i32 = 0;
+            for file in files {
+                sum += file.size;
+            }
+
+            if sum >= size {
+                sizes.push(sum);
+            }
+        }
+
+        let mut min: i32 = sizes[0];
+
+        for size in sizes {
+            if size < min {
+                min = size;
+            }
+        }
+
+        min
+    }
+
+    fn current_used_space(&self) -> i32 {
+        let mut sum = 0;
+        for file in self.directories.get("/").unwrap() {
+            sum += file.size;
+        }
+        sum
+    }
 }
 
 fn make_directories(input: &str) -> HashMap<String, Vec<File>> {
