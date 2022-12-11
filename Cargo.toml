@@ -10,6 +10,7 @@ members = [
   "days/day_7",
   "days/day_8",
   "days/day_9",
+  "days/day_10",
 ]
 
-default-members = ["days/day_9"]
+default-members = ["days/day_10"]
