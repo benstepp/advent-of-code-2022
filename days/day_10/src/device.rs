@@ -54,4 +54,30 @@ impl Device {
     pub fn signal_strength(&self, clock: i32) -> i32 {
         self.registers.get(&clock).unwrap() * clock
     }
+
+    pub fn draw(&self) -> Vec<char> {
+        let mut result: Vec<char> = Vec::with_capacity(240);
+        let mut row: i32 = 0;
+
+        for cycle in 1..=240 {
+            let cursor: i32 = cycle - 1 - (40 * row);
+            let register: &i32 = self.registers.get(&cycle).unwrap();
+
+            if cursor_in_range_of_register(cursor, *register) {
+                result.push('#');
+            } else {
+                result.push('.');
+            }
+
+            if cycle % 40 == 0 {
+                row += 1
+            }
+        }
+
+        result
+    }
+}
+
+fn cursor_in_range_of_register(cursor: i32, register: i32) -> bool {
+    (cursor == register - 1) || (cursor == register) || (cursor == register + 1)
 }
