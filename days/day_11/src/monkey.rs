@@ -2,10 +2,10 @@ use crate::operation::Operation;
 
 #[derive(Debug, Clone, Default)]
 pub struct Monkey {
-    pub items: Vec<i32>,
+    pub items: Vec<i64>,
     pub inspections_performed: i32,
+    pub divisor: i64,
     index: usize,
-    divisor: i32,
     operation: Operation,
     throw_true: usize,
     throw_false: usize,
@@ -31,7 +31,7 @@ impl Monkey {
             }
 
             if let Some(value) = l.strip_prefix("Test: divisible by ") {
-                monkey.divisor = value.parse::<i32>().unwrap();
+                monkey.divisor = value.parse::<i64>().unwrap();
             }
 
             if let Some(value) = l.strip_prefix("Operation: new = ") {
@@ -46,13 +46,11 @@ impl Monkey {
         monkey
     }
 
-    pub fn compute_worry_level(&self, item: i32) -> i32 {
-        let new_worry_level: i32 = self.operation.perform(item);
-        let rounded: i32 = new_worry_level / 3;
-        rounded
+    pub fn compute_worry_level(&self, item: i64) -> i64 {
+        self.operation.perform(item)
     }
 
-    pub fn get_throw_target(&self, item: i32) -> usize {
+    pub fn get_throw_target(&self, item: i64) -> usize {
         if item % self.divisor == 0 {
             self.throw_true
         } else {
@@ -61,11 +59,11 @@ impl Monkey {
     }
 }
 
-fn make_items(input: &str) -> Vec<i32> {
-    let mut items: Vec<i32> = Vec::new();
+fn make_items(input: &str) -> Vec<i64> {
+    let mut items: Vec<i64> = Vec::new();
 
     for i in input.split(", ") {
-        items.push(i.parse::<i32>().unwrap());
+        items.push(i.parse::<i64>().unwrap());
     }
 
     items

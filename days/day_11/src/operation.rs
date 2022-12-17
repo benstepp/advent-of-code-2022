@@ -1,6 +1,6 @@
 #[derive(Debug, Clone)]
 pub enum Input {
-    Number(i32),
+    Number(i64),
     Old,
 }
 
@@ -31,7 +31,7 @@ impl Operation {
         }
     }
 
-    pub fn perform(&self, number: i32) -> i32 {
+    pub fn perform(&self, number: i64) -> i64 {
         match self.operator {
             Operator::Multiplication => self.perform_multiplication(number),
             Operator::Subtraction => self.perform_subtraction(number),
@@ -40,30 +40,30 @@ impl Operation {
         }
     }
 
-    fn perform_multiplication(&self, number: i32) -> i32 {
+    fn perform_multiplication(&self, number: i64) -> i64 {
         self.get_left(number) * self.get_right(number)
     }
 
-    fn perform_subtraction(&self, number: i32) -> i32 {
+    fn perform_subtraction(&self, number: i64) -> i64 {
         self.get_left(number) - self.get_right(number)
     }
 
-    fn perform_addition(&self, number: i32) -> i32 {
+    fn perform_addition(&self, number: i64) -> i64 {
         self.get_left(number) + self.get_right(number)
     }
 
-    fn perform_division(&self, number: i32) -> i32 {
+    fn perform_division(&self, number: i64) -> i64 {
         self.get_left(number) / self.get_right(number)
     }
 
-    fn get_left(&self, number: i32) -> i32 {
+    fn get_left(&self, number: i64) -> i64 {
         match self.left {
             Input::Number(val) => val,
             Input::Old => number,
         }
     }
 
-    fn get_right(&self, number: i32) -> i32 {
+    fn get_right(&self, number: i64) -> i64 {
         match self.right {
             Input::Number(val) => val,
             Input::Old => number,
@@ -113,7 +113,7 @@ fn parse_input(input: &str) -> Input {
     if input == "old" {
         Input::Old
     } else {
-        let num: i32 = input.parse::<i32>().unwrap();
+        let num: i64 = input.parse::<i64>().unwrap();
         Input::Number(num)
     }
 }

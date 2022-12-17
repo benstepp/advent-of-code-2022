@@ -5,8 +5,8 @@ mod operation;
 use crate::keep_away::KeepAway;
 
 struct Result {
-    one: i32,
-    two: i32,
+    one: i64,
+    two: i64,
 }
 
 fn main() {
@@ -19,8 +19,12 @@ fn main() {
 fn day_eleven(input: &str) -> Result {
     let mut game: KeepAway = KeepAway::new(input);
     game.rounds(20);
-    let one: i32 = game.monkey_business();
-    let two: i32 = 0;
+    let one: i64 = game.monkey_business();
+
+    let mut game: KeepAway = KeepAway::new(input);
+    game.set_worry_reduction(false);
+    game.rounds(10000);
+    let two: i64 = game.monkey_business();
 
     Result { one, two }
 }
@@ -34,5 +38,6 @@ mod tests {
         let input: &str = include_str!("../fixtures/test_input");
         let result: Result = day_eleven(input);
         assert_eq!(result.one, 10605);
+        assert_eq!(result.two, 2713310158);
     }
 }
