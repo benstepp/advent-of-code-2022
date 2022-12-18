@@ -5,7 +5,7 @@ use std::collections::VecDeque;
 #[derive(Debug, Default)]
 pub struct Hill {
     matrix: Vec<Vec<i32>>,
-    start: (usize, usize),
+    pub start: (usize, usize),
     end: (usize, usize),
 }
 
@@ -37,11 +37,29 @@ impl Hill {
         hill
     }
 
-    pub fn shortest_path_to_end(&self) -> i32 {
+    pub fn find_scenic_start(&self) -> i32 {
+        let mut shortest: i32 = 0;
+        for (row_index, row) in self.matrix.iter().enumerate() {
+            for (col_index, val) in row.iter().enumerate() {
+                if *val == 0 {
+                    if let Some(distance_to_end) = self.shortest_path_to_end((row_index, col_index))
+                    {
+                        if shortest == 0 || distance_to_end < shortest {
+                            shortest = distance_to_end;
+                        }
+                    }
+                }
+            }
+        }
+
+        shortest
+    }
+
+    pub fn shortest_path_to_end(&self, start: (usize, usize)) -> Option<i32> {
         let mut queue: VecDeque<(usize, usize)> = VecDeque::new();
         let mut visited: HashSet<(usize, usize)> = HashSet::new();
         let mut depth: i32 = 0;
-        queue.push_back(self.start);
+        queue.push_back(start);
 
         while !queue.is_empty() {
             let to_visit: Vec<(usize, usize)> = queue.drain(..).collect();
@@ -49,7 +67,7 @@ impl Hill {
             for coords in to_visit {
                 let (row, col) = coords;
                 if row == self.end.0 && col == self.end.1 {
-                    return depth;
+                    return Some(depth);
                 }
 
                 for child in get_children(&self.matrix, coords) {
@@ -63,7 +81,7 @@ impl Hill {
             depth += 1;
         }
 
-        depth
+        None
     }
 }
 

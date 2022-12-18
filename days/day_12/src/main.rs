@@ -18,8 +18,8 @@ fn main() {
 fn day_twelve(input: &str) -> Result {
     let hill: Hill = Hill::new(input);
 
-    let one: i32 = hill.shortest_path_to_end();
-    let two: i32 = 0;
+    let one: i32 = hill.shortest_path_to_end(hill.start).unwrap();
+    let two: i32 = hill.find_scenic_start();
 
     Result { one, two }
 }
@@ -33,5 +33,6 @@ mod tests {
         let input: &str = include_str!("../fixtures/test_input");
         let result: Result = day_twelve(input);
         assert_eq!(result.one, 31);
+        assert_eq!(result.two, 29);
     }
 }
